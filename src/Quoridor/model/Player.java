@@ -4,9 +4,10 @@
 
 package Quoridor.model;
 
-public class Player {
+public abstract class Player {
 
 	private String playerName;
+	private Board board;
 	private Square position;
 
 	/**
@@ -18,7 +19,12 @@ public class Player {
 
 	public Player(String name, Board board) {
 		// TODO - implement Player.Player
-		throw new UnsupportedOperationException();
+		if( (name != null) && (board != null)) {
+			this.playerName = name;
+			this.board = board;
+		}else {
+			System.out.println("Player() : wrong parameter !");
+		}
 	}
 
 
@@ -26,22 +32,21 @@ public class Player {
 	* This method allows the player to play his turn
 	* @since openjdk version "11.0.3" 2019-04-16
 	*/
-
-	public void play() {
-		// TODO - implement Player.play
-		throw new UnsupportedOperationException();
-	}
-
+	public abstract void play();
+	
+	
 	/**
 	 * Getter for player's name
 	 * @since openjdk version "11.0.3" 2019-04-16
-	 * @return the player's name
 	 */
 
-	public String getPlayerName() {
-		return this.playerName;
-	}
+	public abstract String getPlayerName();		
 
+	
+	/**
+	 * Getter for the position
+	 * @since openjdk version "11.0.3" 2019-04-16
+	 */
 	public Square getSquare(){
 		return this.position;
 	}
@@ -49,12 +54,10 @@ public class Player {
 	/**
 	 * Getter for position X
 	 * @since openjdk version "11.0.3" 2019-04-16
-	 * @return the position X
+
 	 */
 
-	public int getIntX(){
-		return this.position.getX();
-	}
+	public abstract int getIntX();
 
 	/**
 	 * Getter for position Y
@@ -62,8 +65,6 @@ public class Player {
 	 * @return the position Y
 	 */
 
-	public int getIntY(){
-		return this.position.getY();
-	}
+	public abstract int getIntY();
 
 }
