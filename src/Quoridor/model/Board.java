@@ -7,6 +7,7 @@ package Quoridor.model;
 public class Board {
 
 	private Square[][] grid;
+	private int size;
 
 	/**
 	 * Constructor of Board
@@ -15,8 +16,22 @@ public class Board {
 	 */
 
 	public Board() {
-		// TODO - implement Board.Board
-		throw new UnsupportedOperationException();
+		this.size = 19;
+		this.grid = new Square[size][size];
+
+		for (int i = 0 ; i < size ; i++){
+			for (int j = 0 ; j < size ; j++){
+				this.grid[i][j] = new Square(i,j);
+				if(i%2 == 0 || j%2 == 0 ){
+					this.grid[i][j].setType(typeCase.FREEB);
+				}
+				else {
+					this.grid[i][j].setType(typeCase.FREEP);
+				}
+
+			}
+		}
+
 	}
 
 	/**
@@ -55,6 +70,41 @@ public class Board {
 
 	public Square[][] getGrid(){
 		return this.grid;
+	}
+
+	public String toString(){
+		String ret = "";
+		for (Square[] sqr : this.grid){
+			for (Square s : sqr){
+				switch (s.getType()){
+					case FENCE :
+						ret+="[FF]";
+						break;
+
+					case NONE :
+						ret += "[xx]";
+						break;
+
+					case FREEP :
+						ret += "[FP]";
+						break;
+
+					case FREEB :
+						ret += "[FB]";
+						break;
+
+					case P1 :
+						ret += "[P1]";
+						break;
+
+					case P2 :
+						ret += "[P2]";
+						break;
+				}
+			}
+			ret+="\n";
+		}
+		return ret;
 	}
 
 }

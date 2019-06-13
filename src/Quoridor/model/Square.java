@@ -9,6 +9,8 @@ public class Square {
 	private int x;
 	private int y;
 
+	private typeCase c;
+
 	/**
 	 * Contructor of Square
 	 * Square is dentified by its coordinates (x,y)
@@ -19,7 +21,20 @@ public class Square {
 
 	public Square(int x, int y) {
 		// TODO - implement Square.Square
-		throw new UnsupportedOperationException();
+		if (x >= 0 && x < 19){
+			this.x = x;
+
+		}
+		else {
+		System.out.println("x is out of bound");
+		}
+		if ( y >= 0 && y < 19 ) {
+			this.y = y;
+		}
+		else {
+		System.out.println("y is out of bound");
+		}
+
 	}
 
 	/**
@@ -49,7 +64,7 @@ public class Square {
 	 */
 
 	public boolean isFree() {
-		return false;
+		return (c == typeCase.FREEP || c == typeCase.FREEB) ? true : false;
 	}
 
 	/**
@@ -58,8 +73,12 @@ public class Square {
 	 * @return the answer
 	 */
 
-	public boolean isForbidden() {
-		return false;
+	public typeCase getType() {
+		return this.c;
+	}
+
+	public void setType(typeCase c){
+		this.c = c;
 	}
 
 }
