@@ -1,5 +1,5 @@
 /**
-* @author BOURDIN M, SCHLOSSER M, LE FEUNTEUN F, KHALIFA Y, BAUSSON T
+* @author BOURDIN M, SCHLOSSER M, LE FEUNTEUN F
 */
 
 package Quoridor.model;
@@ -16,7 +16,6 @@ public class AutoPlayer extends Player {
 	public AutoPlayer(String name, Board board) {
 		// TODO - implement AutoPlayer.AutoPlayer
 		super(name,board);
-		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -26,7 +25,6 @@ public class AutoPlayer extends Player {
 
 	public void play() {
 		// TODO - implement AutoPlayer.play
-		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -57,6 +55,16 @@ public class AutoPlayer extends Player {
 
 	public String getAutoPlayerName() {
 		return this.getPlayerName();
+	}
+
+	/**
+	 * Getter for AutoPlayer's position
+	 * @since openjdk version "11.0.3" 2019-04-16
+	 * @return the AutoPlayer's position
+	 */
+
+	public Square getAutoPlayerPosition(){
+		return this.getSquare();
 	}
 
 }
