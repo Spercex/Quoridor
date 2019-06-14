@@ -1,5 +1,5 @@
 /**
-* @author BOURDIN M, SCHLOSSER M, LE FEUNTEUN F
+* @author BOURDIN M, SCHLOSSER M, LE FEUNTEUN F, KHALIFA Y, BAUSSON T
 */
 
 package Quoridor.model;
@@ -35,6 +35,13 @@ public class Square {
 		System.out.println("y is out of bound");
 		}
 
+	}
+
+	public int[] getPos(){
+		int[] ret = new int[2];
+		ret[0] = this.x;
+		ret[1] = this.y;
+		return ret;
 	}
 
 	/**
