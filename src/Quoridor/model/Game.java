@@ -1,93 +1,45 @@
 /**
-* @author BOURDIN M, SCHLOSSER M, LE FEUNTEUN F
+* @author BOURDIN M, SCHLOSSER M, LE FEUNTEUN F, KHALIFA Y, BAUSSON T
 */
 
 package Quoridor.model;
 
-public class Game implements IGame{
-	private Player player1, player2;
-	private Mode mode;
-	private Square[][] grid;
-	private int nbTour = 0;
+public class Game {
 	private Board board;
+	private Player player1;
+	private Player player2;
 
-	/**
-	 * This method is a shortcut from System.out.println
-	 * @since openjdk version "11.0.3" 2019-04-16
-	 * @param value - value to print
-	 */
-
-	public void sop(String value){
-		System.out.println(value);
-	}
-
-
-	/**
-	 * This method is a shortcut from System.err.println
-	 * @since openjdk version "11.0.3" 2019-04-16
-	 * @param value - value to print
-	 */
-
-	public void sep(String value){
-		System.err.println(value);
-	}
 
 
 	/**
 	 * Construtor of the class Game
 	 * Create the particularity of the two player
 	 * @since openjdk version "11.0.3" 2019-04-16
-	 * @param playerName1 - First player's name
-	 * @param playerName2 - Second player's name
-	 * @param mode - game mode
+	 * @param playerName1 the name of the first player
+	 * @param playerName2 the name of the second player
+	 * @param mode the mode of the game
 	 */
 
-	public Game(String player1, String player2, Mode mode) {
-		// TODO - implement Game.Game
+	public Game(String player1Name, String player2Name, Mode mode) {
 		this.board = new Board();
-		initializeBoard();
-		if(mode == Mode.HH){
-			this.player1 = new HumanPlayer(playerName1, board);
-			this.player2 = new HumanPlayer(playerName2, board);
-			play(); //A CODER
-		}else if(mode == Mode.HA){
-			this.player1 = new HumanPlayer(playerName1, board);
-			this.player2 = new AutoPlayer(playerName2, board);
-			play2(); //A CODER
-		}else{
-			this.player1 = new AutoPlayer(playerName1, board);
-			this.player2 = new AutoPlayer(playerName2, board);
-			play3(); //A CODER
+		switch (mode){
+			case HH :
+				this.player1 = new HumanPlayer(player1Name, 17, 9, this.board, TypeCase.P1);
+				this.player2 = new HumanPlayer(player2Name, 1, 9, this.board, TypeCase.P2);
+				break;
+
+			case HA :
+			this.player1 = new HumanPlayer(player1Name, 17, 9, this.board, TypeCase.P1);
+			this.player2 = new AutoPlayer(player2Name, 1, 9, this.board, TypeCase.P2);
+			break;
+
+			case AA :
+			this.player1 = new AutoPlayer(player1Name, 17, 9, this.board, TypeCase.P1);
+			this.player2 = new AutoPlayer(player2Name, 1, 9, this.board, TypeCase.P2);
+			break;
+
 		}
 	}
-
-	/**
-	 * play the game
-	 * In Human vs. Human mode with the keyboard
-	 * @since openjdk version "11.0.3" 2019-04-16
-	 */
-
-	public void play(){
-
-	}
-
-	/**
-	 * play the game
-	 * In Human vs. Auto mode with the keyboard
-	 * @since openjdk version "11.0.3" 2019-04-16
-	 */
-
-	public void play2(){
-
-	}
-
-	/**
-	 * play the game
-	 * In Auto vs. Auto
-	 * @since openjdk version "11.0.3" 2019-04-16
-	 */
-
-	public void play3()
 
 	/**
 	 * Manage the end of the game
@@ -96,7 +48,7 @@ public class Game implements IGame{
 	 */
 
 	public boolean endOfGame(){
-		return false;
+		return !((this.player1.getX() == 1)||(this.player2.getX() == 17));
 	}
 
 	/**
@@ -105,6 +57,16 @@ public class Game implements IGame{
 	 */
 
 	public void start(){
+		int move[] = new int[2];
+		while(endOfGame()){
+			this.board.setPlayer(player1, player1.play(board.checkMoves(player1)));
+			this.board.setPlayer(player2, player2.play(board.checkMoves(player2)));
 
+		}
+
+	}
+
+	public void printBoard(){
+		this.board.printBoard();
 	}
 }

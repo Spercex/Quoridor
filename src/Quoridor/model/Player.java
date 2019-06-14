@@ -3,27 +3,24 @@
 */
 
 package Quoridor.model;
-
+import java.util.ArrayList;
 
 public class Player {
 
-	private String playerName;
+	private String name;
 	private Square position;
-	private Board board;
 	private TypeCase t;
 
 	/**
 	 * Constructor of player
 	 * @since openjdk version "11.0.3" 2019-04-16
 	 * @param name ;  name of the player
-	 * @param board :  the current board
 	 */
 
 	public Player(String name, Board board, int x, int y, TypeCase type) {
 		if( (name != null) && (board != null)) {
-			this.playerName = name;
-			this.board = board;
-			this.position = this.board.getSquare(x,y);
+			this.name = name;
+			this.position = board.getSquare(x,y);
 			this.t = type;
 			this.position.setType(this.getType());
 		}else {
@@ -33,9 +30,8 @@ public class Player {
 
 public Player(String name, Board board, TypeCase type) {
 	if( (name != null) && (board != null)) {
-		this.playerName = name;
-		this.board = board;
-		this.position = this.board.getSquare(1,1);
+		this.name = name;
+		this.position = board.getSquare(1,1);
 		this.t = type;
 		this.position.setType(this.getType());
 
@@ -51,7 +47,7 @@ public Player(String name, Board board, TypeCase type) {
 	* @since openjdk version "11.0.3" 2019-04-16
 	*/
 
-	public void play() {
+	public int[] play(ArrayList<Square> legalMoves) {
 		// TODO - implement Player.play
 		throw new UnsupportedOperationException();
 	}
@@ -62,8 +58,8 @@ public Player(String name, Board board, TypeCase type) {
 	 * @return the player's name
 	 */
 
-	public String getPlayerName() {
-		return this.playerName;
+	public String getName() {
+		return this.name;
 	}
 
 	public Square getSquare(){
@@ -124,7 +120,7 @@ public Player(String name, Board board, TypeCase type) {
 	}
 
 	public String toString(){
-		return "< Player is : " + this.playerName +" ; position is ("+getX()+","+getY()+") ; type is "+ this.t+">";
+		return "< Player is : " + this.name +" ; position is ("+getX()+","+getY()+") ; type is "+ this.t+">";
 	}
 
 }

@@ -3,19 +3,20 @@
 */
 
 package Quoridor.model;
+import java.util.ArrayList;
 
 public class AutoPlayer extends Player {
 
 	/**
 	 * Constructor of the class HumanPlayer
 	 * @since openjdk version "11.0.3" 2019-04-16
-	 * @param name : the name of the HumanPlayer
+	 * @param name : the name of the AutoPlayer
 	 * @param board :  the boards
 	 */
 
-	public AutoPlayer(String name, Board board, TypeCase t) {
+	public AutoPlayer(String name, int x, int y, Board board, TypeCase t) {
 		// TODO - implement AutoPlayer.AutoPlayer
-		super(name,board,t);
+		super(name, board, x, y, t);
 		throw new UnsupportedOperationException();
 	}
 
@@ -24,20 +25,12 @@ public class AutoPlayer extends Player {
 	 * @since openjdk version "11.0.3" 2019-04-16
 	 */
 
-	public void play() {
+	public int[] play(ArrayList<Square> legalMoves) {
 		// TODO - implement AutoPlayer.play
 		throw new UnsupportedOperationException();
 	}
 
 
-	/**
-	 * Getter for AutoPlayer's name
-	 * @since openjdk version "11.0.3" 2019-04-16
-	 * @return the AutoPlayer's name
-	 */
 
-	public String getAutoPlayerName() {
-		return this.getPlayerName();
-	}
 
 }
