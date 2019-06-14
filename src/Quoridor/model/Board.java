@@ -29,13 +29,13 @@ public class Board {
 				this.grid[i][j] = new Square(i,j);
 
 				if ( i == 0 || i == 18 || j == 0 || j == 18){
-					this.grid[i][j].setType(typeCase.FORBIDDEN);
+					this.grid[i][j].setType(TypeCase.FORBIDDEN);
 				}
 				else if(i%2 == 0 || j%2 == 0 ){
-					this.grid[i][j].setType(typeCase.FREEB);
+					this.grid[i][j].setType(TypeCase.FREEB);
 				}
 				else {
-					this.grid[i][j].setType(typeCase.FREEP);
+					this.grid[i][j].setType(TypeCase.FREEP);
 				}
 
 			}
@@ -75,10 +75,11 @@ public class Board {
 
 					if (s.isFree()){
 						legalMoves.add(s);
+
 					}
 
 
-					else if (s.getType() == typeCase.P1 || s.getType() == typeCase.P2) { //checks if the next Square is occupied by a player
+					else if (s.getType() == TypeCase.P1 || s.getType() == TypeCase.P2) { //checks if the next Square is occupied by a player
 						Square nextS = this.grid[s.getX()+2*coord[0]][s.getY()+2*coord[1]];
 						Square nextF = this.grid[s.getX()+coord[0]][s.getY()+coord[1]];
 
@@ -86,21 +87,29 @@ public class Board {
 							legalMoves.add(this.grid[s.getX()+2*coord[0]][s.getY()+2*coord[1]]);
 						}
 
-						else if (nextF.getType() == typeCase.FENCE) {	//checks if the square behind the player is fenced
-							if (playerPos[0]-s.getX() == 0){ //checks if the pawn are on the same X
+						else if (nextF.getType() == TypeCase.FENCE) {	//checks if the square behind the player is fenced
+							if (playerPos[1]-s.getY() == 0){ //checks if the pawn are on the same X
 								if (this.grid[s.getX()][s.getY()+1].isFree()){
-									legalMoves.add(this.grid[s.getX()][s.getY()+2]);
+									if (!this.grid[s.getX()][s.getY()+2].equals(p.getPosition())){
+										legalMoves.add(this.grid[s.getX()][s.getY()+2]);
+									}
 								}
 								else if (this.grid[s.getX()][s.getY()-1].isFree()){
-									legalMoves.add(this.grid[s.getX()][s.getY()-2]);
+									if (!this.grid[s.getX()][s.getY()-2].equals(p.getPosition())){
+										legalMoves.add(this.grid[s.getX()][s.getY()-2]);
+									}
 								}
 							}
-							else if (playerPos[1]-s.getY() == 0){  //checks if the pawn are on the same Y
+							else if (playerPos[0]-s.getX() == 0){  //checks if the pawn are on the same Y
 								if (this.grid[s.getX()+1][s.getY()].isFree()){
-									legalMoves.add(this.grid[s.getX()+2][s.getY()]);
+									if (!this.grid[s.getX()+2][s.getY()].equals(p.getPosition())){
+										legalMoves.add(this.grid[s.getX()+2][s.getY()]);
+									}
 								}
 								else if (this.grid[s.getX()-1][s.getY()].isFree()){
-									legalMoves.add(this.grid[s.getX()-2][s.getY()]);
+									if (!this.grid[s.getX()-2][s.getY()].equals(p.getPosition())){
+										legalMoves.add(this.grid[s.getX()-2][s.getY()]);
+									}
 								}
 							}
 						}
@@ -110,7 +119,15 @@ public class Board {
 			catch (IndexOutOfBoundsException e){	}
 
 		}
+
 		return legalMoves;
+	}
+
+	public void checkMoves(Player p){
+		ArrayList<Square> legalMoves = getLegalMoves(p);
+		for (Square s : legalMoves){
+			s.setType(TypeCase.TAKEABLE);
+		}
 	}
 
 	/**
@@ -162,8 +179,8 @@ public class Board {
 
 	public void setPlayer(Player p, int newX, int newY){
 		try {
-			if (newX%2 != 0 && newY%2 != 0){
-				this.grid[p.getX()][p.getY()].setType(typeCase.FREEP);
+			if (newX%2 != 0 && newY%2 != 0 && newX < this.size && newY	 < this.size && this.grid[newX][newY].getType()==TypeCase.FREEP){
+				this.grid[p.getX()][p.getY()].setType(TypeCase.FREEP);
 				this.grid[newX][newY] = new Square(newX, newY, p.getType());
 				p.setPos(this.grid[newX][newY]);
 			}
@@ -174,11 +191,52 @@ public class Board {
 		catch (NullPointerException e){
 			e.printStackTrace();
 			System.out.println("former player pos : " + p.getX()+","+p.getY());
-			System.out.println("former player pos : " + newX+","+newY);
-
+			System.out.println("player pos : " + newX+","+newY);
 		}
 	}
 
+	public boolean isLegalSquare(int x, int y, ArrayList<Square> legalMoves){
+		boolean ret = false;
+		for (Square s : legalMoves){
+			ret = ((s.getX() == x) && (s.getY() == y));
+		}
+		return ret;
+	}
+
+	public void setFence(int x, int y, int dir){
+		try {
+			if ((!(x%2!=0 && y%2!=0)) && x < this.size && y < this.size && this.grid[x][y].getType()==TypeCase.FREEB){
+				this.grid[x][y] = new Square(x, y, TypeCase.FENCE);
+				if (dir == 1){
+					if (x < this.size-2){
+						this.grid[x+1][y] = new Square(x, y, TypeCase.FENCE);
+						this.grid[x+2][y] = new Square(x, y, TypeCase.FENCE);
+					}
+					else {
+						this.grid[x-1][y] = new Square(x, y, TypeCase.FENCE);
+						this.grid[x-2][y] = new Square(x, y, TypeCase.FENCE);
+					}
+				}
+				else if (dir == 0){
+					if (y < this.size-2){
+						this.grid[x][y+1] = new Square(x, y, TypeCase.FENCE);
+						this.grid[x][y+2] = new Square(x, y, TypeCase.FENCE);
+					}
+					else {
+						this.grid[x][y-1] = new Square(x, y, TypeCase.FENCE);
+						this.grid[x][y-2] = new Square(x, y, TypeCase.FENCE);
+					}
+				}
+			}
+			else {
+				System.out.println("Board.setPlayer() : param error : (" + x + ","+ y +") is not a fenceable square");
+			}
+		}
+		catch (NullPointerException e){
+			e.printStackTrace();
+			System.out.println("fence pos : " + x +"," + y);
+		}
+	}
 
 
 	/**
@@ -219,6 +277,7 @@ public class Board {
 		String ret = "";
 		for (Square[] sqr : this.grid){
 			for (Square s : sqr){
+				ret+= TermColors.RESET;
 				switch (s.getType()){
 					case FENCE :
 						ret+="[FF]";
@@ -229,33 +288,33 @@ public class Board {
 						break;
 
 					case FREEP :
-						ret += "[FP]";
+						ret += TermColors.WHITE_BOLD_BRIGHT + "[FP]";
 						break;
 
 					case FREEB :
-						ret += "|  |";
+						ret += "    ";
 						break;
 
 					case P1 :
-						ret += "[P1]";
+						ret += TermColors.BLUE_BRIGHT + "[P1]";
 						break;
 
 					case P2 :
-						ret += "[P2]";
+						ret += TermColors.RED + "[P2]";
 						break;
 
 					case TAKEABLE :
-						ret += "[00]";
+						ret += TermColors.YELLOW_BRIGHT + "[00]";
 						break;
 
 					case FORBIDDEN :
-						ret += "XXXX";
+						ret += TermColors.BLACK + "XXXX";
 						break;
 				}
 			}
 			ret+="\n";
 		}
-		return ret;
+		return ret+TermColors.RESET;
 	}
 
 }

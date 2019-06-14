@@ -1,5 +1,5 @@
 /**
-* @author BOURDIN M, SCHLOSSER M, LE FEUNTEUN F
+* @author BOURDIN M, SCHLOSSER M, LE FEUNTEUN F, KHALIFA Y, BAUSSON T
 */
 
 package Quoridor.model;
@@ -17,10 +17,11 @@ public class HumanPlayer extends Player {
 	 * @param board :  the board
 	 */
 
-	public HumanPlayer(String name, Board board){
+	public HumanPlayer(String name, Board board, TypeCase t){
 		// TODO - implement HumanPlayer.HumanPlayer
-		super(name,board);
-		this.sc = new Scanner(System.in);
+		super(name,board,t);
+		throw new UnsupportedOperationException();
+
 	}
 
 	/**
@@ -30,27 +31,7 @@ public class HumanPlayer extends Player {
 
 	public void play() {
 		// TODO - implement HumanPlayer.play
-
-	}
-
-	/**
-	 * Getter for position X
-	 * @since openjdk version "11.0.3" 2019-04-16
-	 * @return the position X
-	 */
-
-	public int getX() {
-		return this.getIntX();
-	}
-
-	/**
-	 * Getter for position Y
-	 * @since openjdk version "11.0.3" 2019-04-16
-	 * @return the position Y
-	 */
-
-	public int getY() {
-		return this.getIntY();
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -61,16 +42,6 @@ public class HumanPlayer extends Player {
 
 	public String getHumanPlayerName() {
 		return this.getPlayerName();
-	}
-
-	/**
-	 * Getter for HumanPlayer's position
-	 * @since openjdk version "11.0.3" 2019-04-16
-	 * @return the HumanPlayer's position
-	 */
-
-	public Square getHumanPlayerPosition(){
-		return this.getSquare();
 	}
 
 }

@@ -9,7 +9,7 @@ public class Square {
 	private int x;
 	private int y;
 
-	private typeCase c;
+	private TypeCase c;
 
 	/**
 	 * Contructor of Square
@@ -43,7 +43,7 @@ public class Square {
 	 * @param y : coordinate y of the square
 	 * @param t : the type of the square
 	 */
-	public Square(int x, int y, typeCase t) {
+	public Square(int x, int y, TypeCase t) {
 		if (x >= 0 && x < 19){
 			this.x = x;
 		}
@@ -98,7 +98,7 @@ public class Square {
 	 */
 
 	public boolean isFree() {
-		return (c == typeCase.FREEP || c == typeCase.FREEB) ? true : false;
+		return (c == TypeCase.FREEP || c == TypeCase.FREEB) ? true : false;
 	}
 
 	/**
@@ -107,11 +107,11 @@ public class Square {
 	 * @return the answer
 	 */
 
-	public typeCase getType() {
+	public TypeCase getType() {
 		return this.c;
 	}
 
-	public void setType(typeCase c){
+	public void setType(TypeCase c){
 		this.c = c;
 	}
 

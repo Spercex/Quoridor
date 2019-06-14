@@ -10,7 +10,7 @@ public class Player {
 	private String playerName;
 	private Square position;
 	private Board board;
-	private typeCase t;
+	private TypeCase t;
 
 	/**
 	 * Constructor of player
@@ -19,7 +19,7 @@ public class Player {
 	 * @param board :  the current board
 	 */
 
-	public Player(String name, Board board, int x, int y, typeCase type) {
+	public Player(String name, Board board, int x, int y, TypeCase type) {
 		if( (name != null) && (board != null)) {
 			this.playerName = name;
 			this.board = board;
@@ -31,12 +31,12 @@ public class Player {
 		}
 }
 
-public Player(String name, Board board) {
+public Player(String name, Board board, TypeCase type) {
 	if( (name != null) && (board != null)) {
 		this.playerName = name;
 		this.board = board;
 		this.position = this.board.getSquare(1,1);
-		this.t = typeCase.P1;
+		this.t = type;
 		this.position.setType(this.getType());
 
 
@@ -101,16 +101,25 @@ public Player(String name, Board board) {
 	/**
 	 * Sets the position of the player
 	 * @since openjdk version "11.0.3" 2019-06-14
+	 * @param pos the square where the palyer wille be placed
 	 **/
 	public void setPos(Square pos){
 		this.position = pos;
 	}
 
-	public typeCase getType(){
+	/**
+	 * Gets the position square of a player
+	 * @return this.position square
+	 */
+	public Square getPosition(){
+		return this.position;
+	}
+
+	public TypeCase getType(){
 		return this.t;
 	}
 
-	public void setType(typeCase type){
+	public void setType(TypeCase type){
 		this.t = type;
 	}
 
