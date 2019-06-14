@@ -160,11 +160,31 @@ public class Board {
 		return null;
 	}
 
+	public void setPlayer(Player p, int newX, int newY){
+		try {
+			if (newX%2 != 0 && newY%2 != 0){
+				this.grid[p.getX()][p.getY()].setType(typeCase.FREEP);
+				this.grid[newX][newY] = new Square(newX, newY, p.getType());
+				p.setPos(this.grid[newX][newY]);
+			}
+			else {
+				System.out.println("Board.setPlayer() : param error : (" + newX + ","+newY+") is not a playable square");
+			}
+		}
+		catch (NullPointerException e){
+			e.printStackTrace();
+			System.out.println("former player pos : " + p.getX()+","+p.getY());
+			System.out.println("former player pos : " + newX+","+newY);
+
+		}
+	}
+
+
+
 	/**
 	 * print the board on the screen
 	 * @since openjdk version "11.0.3" 2019-04-16
 	 */
-
 	public void printBoard() {
 		System.out.println(this.toString());
 	}
@@ -177,6 +197,17 @@ public class Board {
 
 	public Square[][] getGrid(){
 		return this.grid;
+	}
+
+	public Square getSquare(int x, int y){
+		Square ret = null;
+		try {
+			ret = this.grid[x][y];
+		}
+		catch (NullPointerException e){
+			e.printStackTrace();
+		}
+		return ret;
 	}
 
 	/**
@@ -194,7 +225,7 @@ public class Board {
 						break;
 
 					case NONE :
-						ret += "[xx]";
+						ret += "NONE";
 						break;
 
 					case FREEP :
@@ -219,6 +250,7 @@ public class Board {
 
 					case FORBIDDEN :
 						ret += "XXXX";
+						break;
 				}
 			}
 			ret+="\n";

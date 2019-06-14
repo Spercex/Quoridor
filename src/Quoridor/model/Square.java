@@ -18,7 +18,6 @@ public class Square {
 	 * @param x : coordinate x of the square
 	 * @param y : coordinate y of the square
 	 */
-
 	public Square(int x, int y) {
 		// TODO - implement Square.Square
 		if (x >= 0 && x < 19){
@@ -34,9 +33,37 @@ public class Square {
 		else {
 		System.out.println("y is out of bound");
 		}
-
 	}
 
+	/**
+	 * Contructor of Square
+	 * Square is dentified by its coordinates (x,y)
+	 * @since openjdk version "11.0.3" 2019-04-16
+	 * @param x : coordinate x of the square
+	 * @param y : coordinate y of the square
+	 * @param t : the type of the square
+	 */
+	public Square(int x, int y, typeCase t) {
+		if (x >= 0 && x < 19){
+			this.x = x;
+		}
+		else {
+		System.out.println("x is out of bound");
+		}
+		if ( y >= 0 && y < 19 ) {
+			this.y = y;
+		}
+		else {
+		System.out.println("y is out of bound");
+		}
+		this.c = t;
+	}
+
+	/**
+	 * Gets the position of the square in an int[2]
+	 * @since openjdk version "11.0.3" 2019-06-14
+	 * @return [x,y]
+	 **/
 	public int[] getPos(){
 		int[] ret = new int[2];
 		ret[0] = this.x;
@@ -86,6 +113,10 @@ public class Square {
 
 	public void setType(typeCase c){
 		this.c = c;
+	}
+
+	public String toString(){
+		return "<Square ("+this.x+","+this.y+") is " + this.c+">";
 	}
 
 }
