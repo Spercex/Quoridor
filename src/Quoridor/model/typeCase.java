@@ -6,5 +6,7 @@ public enum typeCase {
 	FREEP,
 	FREEB,
 	P1,
-	P2
+	P2,
+	TAKEABLE,
+	FORBIDDEN;
 }
