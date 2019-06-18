@@ -1,4 +1,5 @@
-import Quoridor.model.*;
+import model.*;
+import view.*;
 
 public class Test{
 
@@ -21,9 +22,10 @@ public class Test{
     //
     // System.out.println(b.toString());
 
-
     Game g = new Game("p1","p2", Mode.HH);
-    g.printBoard();
+    UI view = new termUI(g);
+    g.setUIBoard(view);
+    view.update();
     g.start();
     //b.printBoard();
   }
