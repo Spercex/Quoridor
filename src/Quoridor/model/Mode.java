@@ -1,5 +1,5 @@
 /**
-* @author BOURDIN M, SCHLOSSER M, LE FEUNTEUN F
+* @author BOURDIN M, SCHLOSSER M, LE FEUNTEUN F, KHALIFA Y, BAUSSON T
 */
 
 package Quoridor.model;

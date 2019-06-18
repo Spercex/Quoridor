@@ -57,12 +57,22 @@ public class Game {
 	 */
 
 	public void start(){
-		int move[] = new int[2];
+		int data[] = new int[2];
 		while(endOfGame()){
-			this.board.setPlayer(player1, player1.play(board.checkMoves(player1)));
-			this.board.setPlayer(player2, player2.play(board.checkMoves(player2)));
+			data = player1.play(board.checkMoves(player1));
+			if (data[0]==0){
+				this.board.setPlayer(player1, data[1], data[2]);
+			}
+			else if (data[0] == 1){
 
+			}
+			data = player2.play(board.checkMoves(player2));
+			if (data[0]==0){
+				this.board.setPlayer(player2, data[1], data[2]);
+			}
+			else if(data[0] == 1){}
 		}
+		this.board.printBoard();
 
 	}
 

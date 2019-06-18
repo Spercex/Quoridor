@@ -32,6 +32,32 @@ public class HumanPlayer extends Player {
 	 */
 
 	public int[] play(ArrayList<Square> legalMoves) {
+		int[] data = new int[2];
+		int[] ret = new int[3];
+		int x=-1;
+		do{
+			System.out.println("> " +this.getName() + " : "+"\n\t>> 0 pour se déplacer "+"\n\t>> 1 pour poser un mur ");
+			try {
+				x = scan.nextInt();
+				if (x == 0) { data = movePlayer(legalMoves);}
+				else if ( x== 1) { data = placeFence(null);}
+
+			}
+			catch (InputMismatchException e){
+				System.out.println("Entrer un déplacement valide.");
+			}
+		}
+		while ( x!=0 && x != 1);
+		ret[0] = x;
+		ret[1] = data[0] ;
+		ret[2] = data[1];
+
+
+		return ret;
+
+	}
+
+	public int[] movePlayer(ArrayList<Square> legalMoves){
 		int[] move = new int[2];
 		int[] newPos = new int[2];
 		int x;
@@ -54,7 +80,36 @@ public class HumanPlayer extends Player {
 
 
 		return newPos;
+}
 
+
+
+	public int[] placeFence(ArrayList<Square> forbiddenFences){
+		int[] pos = new int[2];
+		int x, y;
+
+
+		do{
+			System.out.println("> " +this.getName() + " : Entrer l'emplacement en x d'une barriere : ");
+			try {
+				x = scan.nextInt();
+				pos[0] = x;
+			}
+			catch (InputMismatchException e){
+				System.out.println("Entrer un emplacement de barriere valide.");
+			}
+			System.out.println("> " +this.getName() + " : Entrer l'emplacement en y d'une barriere : ");
+			try {
+				y = scan.nextInt();
+				pos[1] = y;
+			}
+			catch (InputMismatchException e){
+				System.out.println("Entrer un emplacement de barriere valide.");
+			}
+		}
+		while(isForbiddenFence(pos, forbiddenFences));
+
+		return pos;
 	}
 
 	public boolean isLegalSquare(int[] move, ArrayList<Square> legalMoves){
@@ -68,6 +123,14 @@ public class HumanPlayer extends Player {
 		return ret;
 	}
 
+	public boolean isForbiddenFence(int[] pos, ArrayList<Square> forbiddenFences){
+		boolean ret = true;
+
+		for (Square s : forbiddenFences){
+			ret = !((s.getX() == pos[0]) && (s.getY() == pos[1]));
+		}
+		return ret;
+	}
 
 
 }

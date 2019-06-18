@@ -43,15 +43,18 @@ public class Board {
 
 	}
 
-public void resetGrid(){
-	for (Square[] sqr : this.grid){
-		for (Square s : sqr){
-			if (s.getType() == TypeCase.TAKEABLE){
-				s.setType(TypeCase.FREEP);
+	public void resetGrid(){
+		for (Square[] sqr : this.grid){
+			for (Square s : sqr){
+				if (s.getType() == TypeCase.TAKEABLE){
+					s.setType(TypeCase.FREEP);
+				}
+				else if (s.getType() == TypeCase.FORBIDDEN){
+					s.setType(TypeCase.FREEB);
+				}
 			}
 		}
 	}
-}
 
 	/**
 	 * check if there is a fence and if the move if allowed
@@ -181,14 +184,37 @@ public void resetGrid(){
 		return ret;
 	}
 
+
+
 /**
  * Gets the arraylist containing the unfenceable squares
  * @since openjdk version "11.0.3" 2019-03-14
  * @return the ArrayList which indicates what squares are forbidden to get a fence
  */
 	public ArrayList<Square> getForbiddenFences(){
+		Square s = null;
+		ArrayList<Square> forbiddenFences = new ArrayList<Square>();
+		for (int i = 0 ; i < this.size ; i+=2){
+			for (int j = 0 ; j < this.size ; j+=2){
+
+				s = this.grid[i][j];
+
+				for (int dx = -1 ; dx < 2 ; dx++){
+					for (int dy = -1 ; dy < 2 ; dy++){
+
+						if (s.getType() == TypeCase.FENCE){
+							//while (){
+									System.out.println("CheckingFences");
+							//}
+						}
+					}
+				}
+			}
+		}
 		return null;
 	}
+
+
 
 	public void setPlayer(Player p, int newX, int newY){
 		try {
@@ -208,7 +234,6 @@ public void resetGrid(){
 			System.out.println("former player pos : " + p.getX()+","+p.getY());
 			System.out.println("player pos : " + newX+","+newY);
 		}
-
 	}
 
 	public void setPlayer(Player p, int[] newPos){
@@ -218,7 +243,6 @@ public void resetGrid(){
 			if (newX%2 != 0 && newY%2 != 0 && newX >= 0 && newY>=0
 					&& newX < this.size && newY	 < this.size
 					&& this.grid[newX][newY].getType()==TypeCase.TAKEABLE){
-
 				this.grid[p.getX()][p.getY()].setType(TypeCase.FREEP);
 				this.grid[newX][newY] = new Square(newX, newY, p.getType());
 				p.setPos(this.grid[newX][newY]);
@@ -226,7 +250,6 @@ public void resetGrid(){
 			else {
 				System.out.println("Board.setPlayer() : param error : (" + newX + ","+newY+") is not a playable square");
 			}
-
 		}
 		catch (NullPointerException e){
 			e.printStackTrace();
@@ -285,7 +308,6 @@ public void resetGrid(){
 	 * @since openjdk version "11.0.3" 2019-04-16
 	 * @return the grid
 	 */
-
 	public Square[][] getGrid(){
 		return this.grid;
 	}
