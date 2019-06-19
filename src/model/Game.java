@@ -3,7 +3,9 @@
 */
 
 package model;
-import view.UI;
+import view.*;
+import javax.swing.*;
+
 
 public class Game {
 	private Board board;
@@ -22,16 +24,21 @@ public class Game {
 	 * @param mode the mode of the game
 	 */
 
-	public Game(String player1Name, String player2Name, Mode mode) {
+	public Game(String player1Name, String player2Name, Mode mode, int ui) {
+
+		System.out.println(this.getPlayer1());
+
 		this.board = new Board();
+		//this.printBoard();
+
 		switch (mode){
 			case HH :
-				this.player1 = new HumanPlayer(player1Name, 17, 9, this.board, TypeCase.P1);
-				this.player2 = new HumanPlayer(player2Name, 1, 9, this.board, TypeCase.P2);
+				this.player1 = new HumanPlayer(player1Name, 17, 9, this.board, TypeCase.P1, this.ui);
+				this.player2 = new HumanPlayer(player2Name, 1, 9, this.board, TypeCase.P2, this.ui);
 				break;
 
 			case HA :
-			this.player1 = new HumanPlayer(player1Name, 17, 9, this.board, TypeCase.P1);
+			this.player1 = new HumanPlayer(player1Name, 17, 9, this.board, TypeCase.P1, this.ui);
 			this.player2 = new AutoPlayer(player2Name, 1, 9, this.board, TypeCase.P2);
 			break;
 
@@ -41,9 +48,26 @@ public class Game {
 			break;
 
 		}
+
+
+		if (ui == 1){
+			runUI(this);
+		}
+		else{
+			this.ui = new termUI(this);
+			this.ui.update();
+		}
+
+		//this.ui.update();
+
+	}
+
+	public void setUI(UI view){
+		this.ui = view;
 	}
 
 	public void setUIBoard(UI view){
+		this.ui = view;
 		this.board.setUI(view);
 	}
 
@@ -78,7 +102,7 @@ public class Game {
 			}
 			else if(data[0] == 1){}
 		}
-		this.board.printBoard();
+		ui.update();
 
 	}
 
@@ -101,4 +125,26 @@ public class Game {
 	public void printBoard(){
 		this.board.printBoard();
 	}
+
+
+
+
+
+
+
+
+
+
+	/**
+ * Thread for the Swing UI
+ * @param g the board
+ */
+private void runUI(Game g) {
+	SwingUtilities.invokeLater(new Runnable() {
+		public void run() {
+			ui = new SwingUI(g);
+			g.setUI(ui);//ui.updateUI();
+		}
+	});
+}
 }

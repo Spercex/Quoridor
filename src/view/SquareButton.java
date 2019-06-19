@@ -6,7 +6,7 @@ import controller.SquareButtonListener;
 public class SquareButton extends JButton{
   private int[] pos;
 
-  public SquareButton(int x, int y, SquareButtonListener mouseAction){
+  public SquareButton(int x, int y, String path, SquareButtonListener mouseAction){
     super();
     this.pos = new int[2];
     this.addMouseListener(mouseAction);
@@ -14,7 +14,7 @@ public class SquareButton extends JButton{
     this.pos[1] = y;
 
     try {
-      this.setIcon(new ImageIcon(getClass().getResource("ressources/squareGray.png")));
+      this.setIcon(new ImageIcon(getClass().getResource(path)));
     }
     catch (NullPointerException e){
       this.setText(x+","+y);
@@ -22,22 +22,22 @@ public class SquareButton extends JButton{
 
     Dimension d;
     if (x % 2 == 0 && y % 2 == 0){
-      d = new Dimension(10,10);
+      d = new Dimension(15,15);
 
     }
 
     else if (x % 2 == 0){
-    d = new Dimension(10,40);
+    d = new Dimension(15,60);
 
     }
 
     else if (y % 2 == 0){
-      d = new Dimension(40,10);
+      d = new Dimension(60,15);
 
     }
 
     else {
-      d = new Dimension(40,40);
+      d = new Dimension(60,60);
 
     }
 

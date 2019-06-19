@@ -2,6 +2,8 @@
 * @author BOURDIN M, SCHLOSSER M, LE FEUNTEUN F, KHALIFA Y, BAUSSON T
 */
 
+import model.*;
+
 public class GameLauncher {
 
 	/**
@@ -10,9 +12,10 @@ public class GameLauncher {
 	 * @param args
 	 */
 
-	public void main(String[] args) {
-		// TODO - implement GameLauncher.main
-		throw new UnsupportedOperationException();
-	}
+	 public static void main(String args[]){
+		 	Game g = new Game("p1","p2", Mode.HH, 1);
+			g.start();
 
+
+	 }
 }

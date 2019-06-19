@@ -25,7 +25,7 @@ public class Board {
 
 	public Board() {
 		this.size = 19;
-
+		//this.ui = view;
 		this.grid = new Square[size][size];
 
 		for (int i = 0 ; i < size ; i++){
@@ -141,7 +141,7 @@ public class Board {
 	}
 
 	public void setUI(UI view){
-		this.ui = view;
+		//this.ui = view;
 	}
 
 	public ArrayList<Square> checkMoves(Player p){
@@ -150,7 +150,7 @@ public class Board {
 		for (Square s : legalMoves){
 			s.setType(TypeCase.TAKEABLE);
 		}
-		this.ui.update();
+		printBoard();
 		return legalMoves;
 	}
 
