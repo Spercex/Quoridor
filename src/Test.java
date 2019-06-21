@@ -21,13 +21,13 @@ public class Test{
     // b.checkMoves(p1);
     //
     // System.out.println(b.toString());
-
+/*
     Game g = new Game("p1","p2", Mode.HH);
-    UI view = new termUI(g);
+    UI view = new TermUI(g);
     g.setUIBoard(view);
     view.update();
     g.start();
-    //b.printBoard();
+*/    //b.printBoard();
   }
 
 }

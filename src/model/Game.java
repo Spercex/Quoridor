@@ -5,12 +5,14 @@
 package model;
 import view.*;
 import javax.swing.*;
+import java.util.ArrayList;
 
 
 public class Game {
 	private Board board;
 	private Player player1;
 	private Player player2;
+	private int currentPlayer;
 	private UI ui;
 
 
@@ -29,7 +31,16 @@ public class Game {
 		System.out.println(this.getPlayer1());
 
 		this.board = new Board();
-		//this.printBoard();
+		this.currentPlayer = 0;
+		if (ui == 1){
+			//runUI(this);
+			this.ui = new SwingUI(this);
+		}
+		else{
+			this.ui = new TermUI(this);
+			//this.ui.update();
+		}
+		this.board.setUI(this.ui);
 
 		switch (mode){
 			case HH :
@@ -48,16 +59,6 @@ public class Game {
 			break;
 
 		}
-
-
-		if (ui == 1){
-			runUI(this);
-		}
-		else{
-			this.ui = new termUI(this);
-			this.ui.update();
-		}
-
 		//this.ui.update();
 
 	}
@@ -78,7 +79,7 @@ public class Game {
 	 */
 
 	public boolean endOfGame(){
-		return !((this.player1.getX() == 1)||(this.player2.getX() == 17));
+		return ((this.player1.getX() == 1)||(this.player2.getX() == 17));
 	}
 
 	/**
@@ -87,23 +88,69 @@ public class Game {
 	 */
 
 	public void start(){
+		if (this.ui instanceof TermUI){
+			startTerm();
+		}
+		else if ( this.ui instanceof SwingUI){
+			startSwing();
+		}
+	}
+
+	public void startSwing(){
 		int data[] = new int[2];
-		while(endOfGame()){
-			data = player1.play(board.checkMoves(player1));
+		ArrayList<Square> forbiddenFences = new ArrayList<>();
+		while(!endOfGame()){
+			//board.checkMoves(player1);
+			data = player1.play();
+			//this.ui.repaint();
+			//this.board.resetGrid();
+			//printBoard();
+			System.out.println("Game : p1 " + data[0]);
+
+			if (data[0]==0){
+				this.board.setPlayer(player1, data[1], data[2]);
+				//System.out.println("Player 1 played");
+			}
+			else if (data[0] == 1){
+			}
+			ui.update();
+
+			System.out.println("Game p2: " + data[0] );
+
+			//board.checkMoves(player2);
+			data = player2.play();
+
+			if (data[0]==0){
+				this.board.setPlayer(player2, data[1], data[2]);
+			}
+			else if(data[0] == 1){
+			}
+			ui.update();
+		}
+		ui.update();
+	}
+
+	public void startTerm(){
+		int data[] = new int[3];
+		while(!endOfGame()){
+			this.board.checkMoves(player1);
+			System.out.println("in game : " + player1.getMoves().toString());
+			data = player1.play();
+
 			if (data[0]==0){
 				this.board.setPlayer(player1, data[1], data[2]);
 			}
 			else if (data[0] == 1){
-
+				this.board.setFence(data[1], data[2], data[3]);
 			}
-			data = player2.play(board.checkMoves(player2));
+			this.board.checkMoves(player2);
+			data = player2.play();
 			if (data[0]==0){
 				this.board.setPlayer(player2, data[1], data[2]);
 			}
 			else if(data[0] == 1){}
 		}
 		ui.update();
-
 	}
 
 	public Board getBoard(){
@@ -118,22 +165,18 @@ public class Game {
 		return this.player2;
 	}
 
-
-
-
-
 	public void printBoard(){
 		this.board.printBoard();
 	}
 
 
+	public int getCurrentPlayer() {
+		return currentPlayer;
+	}
 
-
-
-
-
-
-
+	public void setCurrentPlayer(int currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
 
 	/**
  * Thread for the Swing UI
@@ -143,7 +186,10 @@ private void runUI(Game g) {
 	SwingUtilities.invokeLater(new Runnable() {
 		public void run() {
 			ui = new SwingUI(g);
-			g.setUI(ui);//ui.updateUI();
+			g.setUI(ui);
+			g.getBoard().setUI(ui);
+			//ui.updateUI();
+			//ui.update();
 		}
 	});
 }

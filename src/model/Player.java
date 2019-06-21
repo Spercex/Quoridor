@@ -10,6 +10,8 @@ public class Player {
 	private String name;
 	private Square position;
 	private TypeCase t;
+	private ArrayList<Square> legalMoves;
+	private Board board;
 
 	/**
 	 * Constructor of player
@@ -21,19 +23,22 @@ public class Player {
 		if( (name != null) && (board != null)) {
 			this.name = name;
 			this.position = board.getSquare(x,y);
+			this.board = board;
 			this.t = type;
 			this.position.setType(this.getType());
+			this.legalMoves = new ArrayList<>();
 		}else {
 			System.out.println("Player() : wrong parameter !");
 		}
 }
 
-public Player(String name, Board board, TypeCase type) {
+public Player(String name, Board board, Square sqr) {
 	if( (name != null) && (board != null)) {
 		this.name = name;
-		this.position = board.getSquare(1,1);
-		this.t = type;
-		this.position.setType(this.getType());
+		this.position = sqr;
+		//this.t = type;
+		//this.position.setType(this.getType());
+		this.legalMoves = new ArrayList<>();
 
 
 	}else {
@@ -52,6 +57,11 @@ public Player(String name, Board board, TypeCase type) {
 		throw new UnsupportedOperationException();
 	}
 
+	public int[] play(){
+		throw new UnsupportedOperationException();
+
+	};
+
 	/**
 	 * Getter for player's name
 	 * @since openjdk version "11.0.3" 2019-04-16
@@ -60,6 +70,10 @@ public Player(String name, Board board, TypeCase type) {
 
 	public String getName() {
 		return this.name;
+	}
+
+	public Board getBoard(){
+		return this.board;
 	}
 
 	public Square getSquare(){
@@ -118,6 +132,17 @@ public Player(String name, Board board, TypeCase type) {
 	public void setType(TypeCase type){
 		this.t = type;
 	}
+
+	public ArrayList<Square> getMoves(){
+		return this.legalMoves;
+	}
+
+	public void setMoves( ArrayList<Square> sqr){
+		this.legalMoves = sqr;
+		System.out.println(" in setMoves " + sqr.toString());
+
+	}
+
 
 	public String toString(){
 		return "< Player is : " + this.name +" ; position is ("+getX()+","+getY()+") ; type is "+ this.t+">";

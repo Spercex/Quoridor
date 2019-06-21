@@ -13,7 +13,7 @@ public class GameLauncher {
 	 */
 
 	 public static void main(String args[]){
-		 	Game g = new Game("p1","p2", Mode.HH, 1);
+		 	Game g = new Game("p1","p2", Mode.HH, 0);
 			g.start();
 
 

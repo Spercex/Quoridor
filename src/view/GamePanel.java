@@ -29,14 +29,13 @@ public class GamePanel extends JPanel{
     this.sBarray = new ArrayList<SquareButton>();
     this.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
-    //c.fill = GridBagConstraints.BOTH;
     c.gridwidth = 1;
     c.gridheight = 1;
 
     JButton button = new JButton();
 
     board = g.getBoard();
-    board.printBoard();
+    //board.printBoard();
 
     for (int i = 0 ; i < board.getSize() ; i++){
       c.gridx = i;
@@ -56,7 +55,6 @@ public class GamePanel extends JPanel{
   public void setLastClicked(int x, int y){
     lastClicked[0] = x;
     lastClicked[1] = y;
-
   }
 
   public void updateIcon(int i, int j, int k){
@@ -96,6 +94,15 @@ public class GamePanel extends JPanel{
         break;
     }
 
+  }
+
+  public void updateAllIcons(){
+    int k = 0;
+    for (int i = 0 ; i < board.getSize() ; i++){
+      for (int j = 0 ; j < board.getSize() ; j++){
+        updateIcon(i,j,k++);
+      }
+    }
   }
 
 }

@@ -1,6 +1,9 @@
 package view;
+import java.io.*;
 import java.awt.*;
+import java.awt.image.*;
 import javax.swing.*;
+import javax.imageio.*;
 import controller.SquareButtonListener;
 
 public class SquareButton extends JButton{
@@ -14,11 +17,18 @@ public class SquareButton extends JButton{
     this.pos[1] = y;
 
     try {
-      this.setIcon(new ImageIcon(getClass().getResource(path)));
+      //BufferedImage img = ImageIO.read(getClass().getResource("../ressources/pawn.png"));
+      //this.setIcon(new ImageIcon(img));
+
+      //this.setIcon(ImageIcon.creatImageIcon("../../ressources/pawn.png"));
     }
-    catch (NullPointerException e){
+    catch (NullPointerException npe){
       this.setText(x+","+y);
     }
+    /*catch (IOException e){
+      this.setText(x+","+y);
+
+    }*/
 
     Dimension d;
     if (x % 2 == 0 && y % 2 == 0){

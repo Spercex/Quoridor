@@ -4,9 +4,9 @@
 
 package model;
 
-import java.awt.SystemColor;
 import java.util.ArrayList;
-import java.lang.RuntimeException.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import view.UI;
 
@@ -14,6 +14,7 @@ import view.UI;
 public class Board {
 
 	private Square[][] grid;
+	private ArrayList<Square> forbiddenFences;
 	private int size;
 	private UI ui;
 
@@ -27,6 +28,8 @@ public class Board {
 		this.size = 19;
 		//this.ui = view;
 		this.grid = new Square[size][size];
+
+		this.forbiddenFences = new ArrayList<>();
 
 		for (int i = 0 ; i < size ; i++){
 			for (int j = 0 ; j < size ; j++){
@@ -58,6 +61,7 @@ public class Board {
 				}
 			}
 		}
+		this.ui.update();
 	}
 
 	/**
@@ -136,23 +140,41 @@ public class Board {
 			catch (IndexOutOfBoundsException e){	}
 
 		}
+		p.setMoves(legalMoves);
+
+		//System.out.println(" in getLegalMoves " + p.getMoves().toString());
+
 
 		return legalMoves;
 	}
 
 	public void setUI(UI view){
-		//this.ui = view;
+		this.ui = view;
 	}
-
+/*
 	public ArrayList<Square> checkMoves(Player p){
 		ArrayList<Square> legalMoves = getLegalMoves(p);
 		resetGrid();
 		for (Square s : legalMoves){
 			s.setType(TypeCase.TAKEABLE);
 		}
+		//this.ui.update();
 		printBoard();
 		return legalMoves;
 	}
+*/
+	public void checkMoves(Player p){
+		getLegalMoves(p);
+		resetGrid();
+		System.out.println(p.getName() + ":\n");
+		for (Square s : p.getMoves()){
+			s.setType(TypeCase.TAKEABLE);
+			//System.out.println(s.toString());
+
+		}
+		this.ui.update();
+	}
+
 
 	/**
 	 * Get the position of a player
@@ -194,53 +216,41 @@ public class Board {
 
 
 
-/**
- * Gets the arraylist containing the unfenceable squares
- * @since openjdk version "11.0.3" 2019-03-14
- * @return the ArrayList which indicates what squares are forbidden to get a fence
- */
-	public ArrayList<Square> getForbiddenFences(){
-		Square s = null;
-		ArrayList<Square> forbiddenFences = new ArrayList<Square>();
-		for (int i = 0 ; i < this.size ; i+=2){
-			for (int j = 0 ; j < this.size ; j+=2){
 
-				s = this.grid[i][j];
 
-				for (int dx = -1 ; dx < 2 ; dx++){
-					for (int dy = -1 ; dy < 2 ; dy++){
-
-						if (s.getType() == TypeCase.FENCE){
-							//while (){
-									System.out.println("CheckingFences");
-							//}
-						}
-					}
-				}
-			}
-		}
-		return null;
-	}
 
 
 
 	public void setPlayer(Player p, int newX, int newY){
-		try {
-			if (newX%2 != 0 && newY%2 != 0 && newX >= 0 && newY>=0
-					&& newX < this.size && newY	 < this.size
-					&& this.grid[newX][newY].getType()==TypeCase.TAKEABLE){
-				this.grid[p.getX()][p.getY()].setType(TypeCase.FREEP);
-				this.grid[newX][newY] = new Square(newX, newY, p.getType());
-				p.setPos(this.grid[newX][newY]);
+		if (p.getMoves() != null){
+			try {
+				//System.out.println(newX%2 != 0 && newY%2 != 0 && newX >= 0 && newY>=0
+				//		&& newX < this.size && newY	 < this.size);
+				//System.out.println(this.grid[newX][newY].getType()==TypeCase.TAKEABLE);
+				//System.out.println("in setPlayer : " +p.getMoves().toString());
+
+				if (newX%2 != 0 && newY%2 != 0 && newX >= 0 && newY>=0
+						&& newX < this.size && newY	 < this.size
+						&& this.grid[newX][newY].getType()==TypeCase.TAKEABLE){
+					this.grid[p.getX()][p.getY()].setType(TypeCase.FREEP);
+					this.grid[newX][newY].setType(p.getType());
+
+					//this.grid[newX][newY] = new Square(newX, newY, p.getType());
+					p.setPos(this.grid[newX][newY]);
+					this.ui.update();
+				}
+				else {
+					System.out.println("Board.setPlayer() : param error : player : "+p.getName()+" (" + newX + ","+newY+") is not a playable square");
+				}
 			}
-			else {
-				System.out.println("Board.setPlayer() : param error : (" + newX + ","+newY+") is not a playable square");
+			catch (NullPointerException e){
+				e.printStackTrace();
+				System.out.println("former player pos : " + p.getX()+","+p.getY());
+				System.out.println("player pos : " + newX+","+newY);
 			}
 		}
-		catch (NullPointerException e){
-			e.printStackTrace();
-			System.out.println("former player pos : " + p.getX()+","+p.getY());
-			System.out.println("player pos : " + newX+","+newY);
+		else {
+			System.out.println("Board.setPlayer() : param error : player.getMoves() is null");
 		}
 	}
 
@@ -254,6 +264,8 @@ public class Board {
 				this.grid[p.getX()][p.getY()].setType(TypeCase.FREEP);
 				this.grid[newX][newY] = new Square(newX, newY, p.getType());
 				p.setPos(this.grid[newX][newY]);
+				this.ui.update();
+
 			}
 			else {
 				System.out.println("Board.setPlayer() : param error : (" + newX + ","+newY+") is not a playable square");
@@ -295,6 +307,7 @@ public class Board {
 			else {
 				System.out.println("Board.setPlayer() : param error : (" + x + ","+ y +") is not a fenceable square");
 			}
+			this.ui.update();
 		}
 		catch (NullPointerException e){
 			e.printStackTrace();
@@ -372,6 +385,7 @@ public class Board {
 
 					case TAKEABLE :
 						ret += TermColors.YELLOW_BRIGHT + "[00]";
+						System.out.println(s.toString());
 						break;
 
 					case FORBIDDEN :
@@ -383,5 +397,72 @@ public class Board {
 		}
 		return ret+TermColors.RESET;
 	}
+
+	public void setForbiddenFences(Player p){
+		this.forbiddenFences.add(BFS(p.getX(),p.getY()));
+	}
+
+	public ArrayList<Square> getForbiddenFences(){
+		return this.forbiddenFences;
+	}
+
+
+	/**
+	 * PathFiding algorith :search if the player ca reach the end of the board or if it is impossible
+	 * @param x : coordinate x
+	 * @param y : coordinate y
+	 * @return
+	 */
+	public Square BFS(int x, int y){
+		Queue<Square> q = new LinkedList<Square>();
+		LinkedList<Square> visited = new LinkedList<Square>();
+		Square current = new Square(x,y);
+
+		boolean finished = false;
+
+		q.add(current);
+		visited.add(current);
+
+		while(!q.isEmpty() && !finished ){
+			current = q.remove();
+			Player player = new Player("p", this, current);
+			this.checkMoves(player);
+			for(Square p : player.getMoves()){
+				if(!visited.contains(p)){
+					visited.add(p);
+					q.add(p);
+					if(endVerif(p,this.grid[x][y].getType())){
+						current = p;
+						finished = true;
+						break;
+					}
+				}
+			}
+		}
+		return current;
+	}
+
+	/**
+	 * check if the position of the square searched by the player is the end
+	 * @param sq : the square to check
+	 * @param player : color of the player
+	 * @return true if the actual sq is the end for this player
+	 */
+	public boolean endVerif(Square sq, TypeCase player){
+		boolean ret = false;
+		if(player == TypeCase.P1){
+			if(sq.getX() == 0){
+				ret = true;
+			}
+		}
+		else if(player == TypeCase.P2){
+			if(sq.getX() == 17){
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+
 
 }

@@ -46,11 +46,13 @@ public class SwingUI extends JFrame implements UI{
 	}
 
 	public void update(){
-		this.remove(mainContainer);
-		this.mainContainer = new GamePanel(g, this);
-		this.mainContainer.validate();
-		this.add(mainContainer);
-		this.repaint();
+		//this.remove(mainContainer);
+		//this.mainContainer = new GamePanel(g, this);
+		((GamePanel)(this.mainContainer)).updateAllIcons();
+		//this.validate();
+		//this.add(mainContainer);
+		//this.validate();
+
 	}
 
 }
